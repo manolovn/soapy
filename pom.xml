@@ -14,5 +14,15 @@
             <url>http://ksoap2-android.googlecode.com/svn/m2-repo</url>
         </repository>
     </repositories>
-    
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.google.code.ksoap2-android</groupId>
+            <artifactId>ksoap2-android</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+        
+    </dependencies>
+
 </project>
