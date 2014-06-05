@@ -1,12 +1,13 @@
 package com.manolovn.android.soapy;
 
-import junit.framework.TestCase;
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 /**
  * Soapy test
  */
-public class SoapyTest extends TestCase {
+public class SoapyTest {
 
     @Test
     public void soapyBuilderTest() {
