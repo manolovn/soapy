@@ -8,5 +8,11 @@
     <artifactId>soapy</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <repositories>
+        <repository>
+            <id>ksoap-android</id>
+            <url>http://ksoap2-android.googlecode.com/svn/m2-repo</url>
+        </repository>
+    </repositories>
     
 </project>
