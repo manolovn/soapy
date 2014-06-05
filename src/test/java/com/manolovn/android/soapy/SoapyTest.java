@@ -1,5 +1,6 @@
 package com.manolovn.android.soapy;
 
+import com.manolovn.android.soapy.api.TempConvert;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -11,9 +12,15 @@ public class SoapyTest {
 
     @Test
     public void soapyBuilderTest() {
-        final int expected = 5;
-        final int reality = 5;
-        assertEquals(expected, reality);
+
+        Soapy api = new Soapy.Builder()
+                .setEndpoint("http://www.w3schools.com/webservices/tempconvert.asmx")
+                .setNamespace("http://www.w3schools.com/webservices")
+                .build();
+
+        TempConvert tempConvert = api.create(TempConvert.class);
+
+        tempConvert.celsiusToFahrenheit("30");
     }
 
 }
