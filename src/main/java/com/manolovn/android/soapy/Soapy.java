@@ -73,12 +73,14 @@ public class Soapy {
         private String endpoint;
         private String namespace;
 
-        public void setEndpoint(String endpoint) {
+        public Builder setEndpoint(String endpoint) {
             this.endpoint = endpoint;
+            return this;
         }
 
-        public void setNamespace(String namespace) {
+        public Builder setNamespace(String namespace) {
             this.namespace = namespace;
+            return this;
         }
 
         public Soapy build() {
