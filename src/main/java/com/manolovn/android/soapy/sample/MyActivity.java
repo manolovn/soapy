@@ -1,7 +1,8 @@
-package com.manolovn.android.soapy;
+package com.manolovn.android.soapy.sample;
 
 import android.app.Activity;
 import android.os.Bundle;
+import com.manolovn.android.soapy.R;
 
 public class MyActivity extends Activity {
     /**
