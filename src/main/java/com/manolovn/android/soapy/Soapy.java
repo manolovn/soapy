@@ -1,6 +1,7 @@
 package com.manolovn.android.soapy;
 
 import com.manolovn.android.soapy.annotations.SOAPMethod;
+import com.manolovn.android.soapy.annotations.SOAPProperty;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
@@ -33,7 +34,6 @@ public class Soapy {
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
-
             // extract method name
             String methodname = "";
             if (method.isAnnotationPresent(SOAPMethod.class)) {
@@ -44,21 +44,26 @@ public class Soapy {
             }
             SoapObject request = new SoapObject(namespace + "/", methodname);
 
-            Annotation[][] annotations = method.getParameterAnnotations();
-            for (Annotation[] ann : annotations) {
-                System.out.printf("%d annotatations", ann.length);
-                System.out.println();
+            Annotation[][] parameterAnnotations = method.getParameterAnnotations();
+            Class[] parameterTypes = method.getParameterTypes();
+
+            int i = 0;
+            for(Annotation[] annotations : parameterAnnotations){
+                Class parameterType = parameterTypes[i++];
+
+                for(Annotation annotation : annotations){
+                    if(annotation instanceof SOAPProperty){
+                        SOAPProperty myAnnotation = (SOAPProperty) annotation;
+                        System.out.println("param: " + parameterType.getName());
+                        System.out.println("value: " + myAnnotation.value());
+                        request.addProperty(myAnnotation.value(), args[0]);
+                    }
+                }
             }
 
-            // extract properties
-            // request.addProperty("Celsius", celsius);
-
             SoapSerializationEnvelope envelope = getSoapSerializationEnvelope(request);
-
             httpTransportSE.call(namespace + "/" + methodname, envelope);
-
             //testHttpResponse(httpTransportSE);
-
             return envelope.getResponse().toString();
         }
 
