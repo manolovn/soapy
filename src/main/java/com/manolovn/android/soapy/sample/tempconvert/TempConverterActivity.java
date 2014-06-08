@@ -6,13 +6,10 @@ import android.os.Bundle;
 import android.widget.Toast;
 import com.manolovn.android.soapy.R;
 import com.manolovn.android.soapy.Soapy;
-import com.manolovn.android.soapy.sample.lab.Lab;
-import com.manolovn.android.soapy.sample.lab.LabsApi;
 
-public class MyActivity extends Activity {
+public class TempConverterActivity extends Activity {
 
     TempConvert tempConvert;
-    LabsApi labsApi;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -25,12 +22,7 @@ public class MyActivity extends Activity {
                 .build();
         tempConvert = api.create(TempConvert.class);
 
-        Soapy api2 = new Soapy.Builder()
-                .setEndpoint("http://ulabs.science.ubc.ca/pub/interface/ws_server.php")
-                .build();
-        labsApi = api2.create(LabsApi.class);
-
-        new SoapTask().execute("");
+        new SoapTask().execute("30");
     }
 
     private class SoapTask extends AsyncTask<String, Integer, String> {
@@ -39,18 +31,16 @@ public class MyActivity extends Activity {
         protected String doInBackground(String... params) {
 
             String resultsString = "";
-//            resultsString = tempConvert.celsiusToFahrenheit("30");
-            Lab lab = null;
-            lab = labsApi.getLab(1);
+            resultsString = tempConvert.celsiusToFahrenheit(params[0]);
 
-            return lab.getTitle();
+            return resultsString;
         }
 
         @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
 
-            Toast.makeText(MyActivity.this, s, Toast.LENGTH_SHORT).show();
+            Toast.makeText(TempConverterActivity.this, result, Toast.LENGTH_SHORT).show();
         }
     }
 
