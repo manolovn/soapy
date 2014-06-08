@@ -17,7 +17,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 /**
- * Soapy builder
+ * Soapy main class
+ *
+ * @author manolovn
  */
 public class Soapy {
 
