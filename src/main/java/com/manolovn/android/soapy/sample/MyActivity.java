@@ -24,12 +24,11 @@ public class MyActivity extends Activity {
                 .setEndpoint("http://www.w3schools.com/webservices/tempconvert.asmx")
                 .setNamespace("http://www.w3schools.com/webservices")
                 .build();
+        tempConvert = api.create(TempConvert.class);
 
         Soapy api2 = new Soapy.Builder()
                 .setEndpoint("http://ulabs.science.ubc.ca/pub/interface/ws_server.php")
                 .build();
-
-        tempConvert = api.create(TempConvert.class);
         labsApi = api2.create(LabsApi.class);
 
         new SoapTask().execute("");
@@ -41,11 +40,11 @@ public class MyActivity extends Activity {
         protected String doInBackground(String... params) {
 
             String resultsString = "";
-            //resultsString = tempConvert.celsiusToFahrenheit("30");
+//            resultsString = tempConvert.celsiusToFahrenheit("30");
             Lab lab = null;
-            lab = labsApi.getLab(10);
+            lab = labsApi.getLab(1);
 
-            return lab.getId() + " - " + lab.getTitle();
+            return lab.getTitle();
         }
 
         @Override
