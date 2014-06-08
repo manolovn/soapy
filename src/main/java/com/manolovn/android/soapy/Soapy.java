@@ -5,6 +5,7 @@ import com.manolovn.android.soapy.annotations.SOAPProperty;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
@@ -66,29 +67,38 @@ public class Soapy {
             envelope.setOutputSoapObject(request);
             httpTransportSE.call(namespace + "/" + methodname, envelope);
 
-            Class<?> returnType = method.getReturnType();
-            SoapObject response = (SoapObject) envelope.getResponse();
-
-            // parse SoapObject to return type
-            Object instance = null;
-            instance = returnType.newInstance();
-            returnType.cast(instance);
-
-            int totalCount = response.getPropertyCount();
-            for (int detailCount = 0; detailCount < totalCount; detailCount++) {
-
-                PropertyInfo propertyInfo = new PropertyInfo();
-                response.getPropertyInfo(detailCount, propertyInfo);
-
-                try {
-                    Field field = instance.getClass().getDeclaredField(propertyInfo.getName());
-                    field.set(instance, propertyInfo.getValue());
-                } catch (NoSuchFieldException exception) {
-                    // nevermind
-                }
+            if (envelope.getResponse() instanceof SoapPrimitive) {
+                SoapPrimitive primitive = (SoapPrimitive) envelope.getResponse();
+                return primitive.toString();
             }
 
-            return instance;
+            if (envelope.getResponse() instanceof SoapObject) {
+                Class<?> returnType = method.getReturnType();
+                SoapObject response = (SoapObject) envelope.getResponse();
+
+                // parse SoapObject to return type
+                Object instance = null;
+                instance = returnType.newInstance();
+                returnType.cast(instance);
+
+                int totalCount = response.getPropertyCount();
+                for (int detailCount = 0; detailCount < totalCount; detailCount++) {
+
+                    PropertyInfo propertyInfo = new PropertyInfo();
+                    response.getPropertyInfo(detailCount, propertyInfo);
+
+                    try {
+                        Field field = instance.getClass().getDeclaredField(propertyInfo.getName());
+                        field.set(instance, propertyInfo.getValue());
+                    } catch (NoSuchFieldException exception) {
+                        // nevermind
+                    }
+                }
+
+                return instance;
+            }
+
+            return null;
         }
 
     }
@@ -138,9 +148,14 @@ public class Soapy {
             }
             if (httpTransportSE == null) {
                 httpTransportSE = new HttpTransportSE(java.net.Proxy.NO_PROXY, endpoint, 60000);
+                httpTransportSE.debug = true;
+                httpTransportSE.setXmlVersionTag("<!--?xml version=\"1.0\" encoding= \"UTF-8\" ?-->");
             }
             if (envelope == null) {
                 envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+                envelope.setAddAdornments(false);
+                envelope.implicitTypes = true;
+                envelope.dotNet = true;
             }
         }
     }
