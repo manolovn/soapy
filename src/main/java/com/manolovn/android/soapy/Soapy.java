@@ -3,11 +3,13 @@ package com.manolovn.android.soapy;
 import com.manolovn.android.soapy.annotations.SOAPMethod;
 import com.manolovn.android.soapy.annotations.SOAPProperty;
 import org.ksoap2.SoapEnvelope;
+import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -48,15 +50,15 @@ public class Soapy {
             Class[] parameterTypes = method.getParameterTypes();
 
             int i = 0;
-            for(Annotation[] annotations : parameterAnnotations){
+            for (Annotation[] annotations : parameterAnnotations) {
                 Class parameterType = parameterTypes[i++];
 
-                for(Annotation annotation : annotations){
-                    if(annotation instanceof SOAPProperty){
+                for (Annotation annotation : annotations) {
+                    if (annotation instanceof SOAPProperty) {
                         SOAPProperty myAnnotation = (SOAPProperty) annotation;
                         System.out.println("param: " + parameterType.getName());
                         System.out.println("value: " + myAnnotation.value());
-                        request.addProperty(myAnnotation.value(), args[0]);
+                        request.addProperty(myAnnotation.value(), args[--i]);
                     }
                 }
             }
@@ -64,7 +66,31 @@ public class Soapy {
             SoapSerializationEnvelope envelope = getSoapSerializationEnvelope(request);
             httpTransportSE.call(namespace + "/" + methodname, envelope);
             //testHttpResponse(httpTransportSE);
-            return envelope.getResponse().toString();
+
+            Class<?> returnType = method.getReturnType();
+            SoapObject response = (SoapObject) envelope.getResponse();
+
+            // parse SoapObject to return type
+            Object instance = null;
+            instance = returnType.newInstance();
+            returnType.cast(instance);
+
+            int totalCount = response.getPropertyCount();
+            for (int detailCount = 0; detailCount < totalCount; detailCount++) {
+                Object property = response.getProperty(detailCount);
+
+                PropertyInfo propertyInfo = new PropertyInfo();
+                response.getPropertyInfo(detailCount, propertyInfo);
+
+                try {
+                    Field field = instance.getClass().getDeclaredField(propertyInfo.getName());
+                    field.set(instance, propertyInfo.getValue());
+                } catch (NoSuchFieldException exception) {
+                    // nevermind
+                }
+            }
+
+            return instance;
         }
 
     }
