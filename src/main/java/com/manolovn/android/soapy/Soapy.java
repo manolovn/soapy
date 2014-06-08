@@ -21,14 +21,14 @@ public class Soapy {
 
     final String endpoint;
     final String namespace;
-
     final HttpTransportSE httpTransportSE;
+    final SoapSerializationEnvelope envelope;
 
-    private Soapy(String endpoint, String namespace) {
+    private Soapy(String endpoint, String namespace, HttpTransportSE httpTransportSE, SoapSerializationEnvelope envelope) {
         this.endpoint = endpoint;
         this.namespace = namespace;
-
-        this.httpTransportSE = getHttpTransportSE(endpoint);
+        this.httpTransportSE = httpTransportSE;
+        this.envelope = envelope;
     }
 
     private class SoapyHandler implements InvocationHandler {
@@ -63,9 +63,8 @@ public class Soapy {
                 }
             }
 
-            SoapSerializationEnvelope envelope = getSoapSerializationEnvelope(request);
+            envelope.setOutputSoapObject(request);
             httpTransportSE.call(namespace + "/" + methodname, envelope);
-            //testHttpResponse(httpTransportSE);
 
             Class<?> returnType = method.getReturnType();
             SoapObject response = (SoapObject) envelope.getResponse();
@@ -102,6 +101,8 @@ public class Soapy {
     public static class Builder {
         private String endpoint;
         private String namespace;
+        private SoapSerializationEnvelope envelope;
+        private HttpTransportSE httpTransportSE;
 
         public Builder setEndpoint(String endpoint) {
             this.endpoint = endpoint;
@@ -113,48 +114,35 @@ public class Soapy {
             return this;
         }
 
+        public Builder setEnvelope(SoapSerializationEnvelope envelope) {
+            this.envelope = envelope;
+            return this;
+        }
+
+        public Builder setHttpTransportSE(HttpTransportSE httpTransportSE) {
+            this.httpTransportSE = httpTransportSE;
+            return this;
+        }
+
         public Soapy build() {
             if (endpoint == null) {
                 throw new IllegalArgumentException("Endpoint may not be null");
             }
             setDefaults();
-            return new Soapy(endpoint, namespace);
+            return new Soapy(endpoint, namespace, httpTransportSE, envelope);
         }
 
         private void setDefaults() {
             if (namespace == null) {
                 namespace = endpoint;
             }
+            if (httpTransportSE == null) {
+                httpTransportSE = new HttpTransportSE(java.net.Proxy.NO_PROXY, endpoint, 60000);
+            }
+            if (envelope == null) {
+                envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+            }
         }
-    }
-
-    /**
-     * Serialize {@link org.ksoap2.serialization.SoapObject} to {@link org.ksoap2.serialization.SoapSerializationEnvelope}
-     *
-     * @param request : SOAP object to be serialized
-     * @return : request serialized as SOAP envelope
-     */
-    protected final SoapSerializationEnvelope getSoapSerializationEnvelope(SoapObject request) {
-        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-        envelope.dotNet = true;
-        envelope.implicitTypes = true;
-        envelope.setAddAdornments(false);
-        envelope.setOutputSoapObject(request);
-
-        return envelope;
-    }
-
-    /**
-     * Returns SOAP HTTP transport
-     *
-     * @param baseUrl : base URL
-     * @return {@link org.ksoap2.transport.HttpTransportSE}
-     */
-    protected final HttpTransportSE getHttpTransportSE(String baseUrl) {
-        HttpTransportSE ht = new HttpTransportSE(java.net.Proxy.NO_PROXY, baseUrl, 60000);
-        ht.debug = true;
-        ht.setXmlVersionTag("<!--?xml version=\"1.0\" encoding= \"UTF-8\" ?-->");
-        return ht;
     }
 
 }
