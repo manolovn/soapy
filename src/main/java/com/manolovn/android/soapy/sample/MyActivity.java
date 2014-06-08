@@ -13,6 +13,7 @@ import java.io.IOException;
 public class MyActivity extends Activity {
 
     TempConvert tempConvert;
+    LabsApi labsApi;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -24,7 +25,12 @@ public class MyActivity extends Activity {
                 .setNamespace("http://www.w3schools.com/webservices")
                 .build();
 
+        Soapy api2 = new Soapy.Builder()
+                .setEndpoint("http://ulabs.science.ubc.ca/pub/interface/ws_server.php")
+                .build();
+
         tempConvert = api.create(TempConvert.class);
+        labsApi = api2.create(LabsApi.class);
 
         new SoapTask().execute("");
     }
@@ -35,9 +41,11 @@ public class MyActivity extends Activity {
         protected String doInBackground(String... params) {
 
             String resultsString = "";
-            resultsString = tempConvert.celsiusToFahrenheit("30");
+            //resultsString = tempConvert.celsiusToFahrenheit("30");
+            Lab lab = null;
+            lab = labsApi.getLab(10);
 
-            return resultsString;
+            return lab.getId() + " - " + lab.getTitle();
         }
 
         @Override
