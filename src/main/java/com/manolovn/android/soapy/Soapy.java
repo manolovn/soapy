@@ -77,7 +77,6 @@ public class Soapy {
 
             int totalCount = response.getPropertyCount();
             for (int detailCount = 0; detailCount < totalCount; detailCount++) {
-                Object property = response.getProperty(detailCount);
 
                 PropertyInfo propertyInfo = new PropertyInfo();
                 response.getPropertyInfo(detailCount, propertyInfo);
