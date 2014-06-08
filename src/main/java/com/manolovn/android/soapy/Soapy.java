@@ -40,8 +40,6 @@ public class Soapy {
             // extract method name
             String methodname = "";
             if (method.isAnnotationPresent(SOAPMethod.class)) {
-                System.out.println("SOAP METHOD " + method.getName());
-
                 SOAPMethod methodNameAnnotation = method.getAnnotation(SOAPMethod.class);
                 methodname = methodNameAnnotation.value();
             }
@@ -57,8 +55,6 @@ public class Soapy {
                 for (Annotation annotation : annotations) {
                     if (annotation instanceof SOAPProperty) {
                         SOAPProperty myAnnotation = (SOAPProperty) annotation;
-                        System.out.println("param: " + parameterType.getName());
-                        System.out.println("value: " + myAnnotation.value());
                         request.addProperty(myAnnotation.value(), args[--i]);
                     }
                 }
