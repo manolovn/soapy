@@ -7,7 +7,12 @@
     <groupId>com.manolovn.android</groupId>
     <artifactId>soapy</artifactId>
     <version>0.1.0</version>
-    <packaging>apk</packaging>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>soapy</module>
+        <module>soapy-samples</module>
+    </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
