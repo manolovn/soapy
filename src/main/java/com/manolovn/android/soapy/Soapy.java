@@ -1,5 +1,6 @@
 package com.manolovn.android.soapy;
 
+import android.util.Log;
 import com.manolovn.android.soapy.annotations.SOAPMethod;
 import com.manolovn.android.soapy.annotations.SOAPProperty;
 import org.ksoap2.SoapEnvelope;
@@ -49,19 +50,25 @@ public class Soapy {
             Class[] parameterTypes = method.getParameterTypes();
 
             int i = 0;
+            int k = 0;
             for (Annotation[] annotations : parameterAnnotations) {
                 Class parameterType = parameterTypes[i++];
 
                 for (Annotation annotation : annotations) {
                     if (annotation instanceof SOAPProperty) {
                         SOAPProperty myAnnotation = (SOAPProperty) annotation;
-                        request.addProperty(myAnnotation.value(), args[--i]);
+                        request.addProperty(myAnnotation.value(), args[k]);
+                        k++;
                     }
                 }
             }
 
             envelope.setOutputSoapObject(request);
-            httpTransportSE.call(namespace + "/" + methodname, envelope);
+            try {
+                httpTransportSE.call(namespace + "/" + methodname, envelope);
+            } catch (Exception e) {
+                Log.e("xxx", e.getMessage());
+            }
 
             if (envelope.getResponse() instanceof SoapPrimitive) {
                 SoapPrimitive primitive = (SoapPrimitive) envelope.getResponse();
@@ -85,6 +92,7 @@ public class Soapy {
 
                     try {
                         Field field = instance.getClass().getDeclaredField(propertyInfo.getName());
+                        field.setAccessible(true);
                         field.set(instance, propertyInfo.getValue());
                     } catch (NoSuchFieldException exception) {
                         // nevermind
@@ -144,13 +152,10 @@ public class Soapy {
             }
             if (httpTransportSE == null) {
                 httpTransportSE = new HttpTransportSE(java.net.Proxy.NO_PROXY, endpoint, 60000);
-                httpTransportSE.debug = true;
                 httpTransportSE.setXmlVersionTag("<!--?xml version=\"1.0\" encoding= \"UTF-8\" ?-->");
             }
             if (envelope == null) {
                 envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-                envelope.setAddAdornments(false);
-                envelope.implicitTypes = true;
                 envelope.dotNet = true;
             }
         }
