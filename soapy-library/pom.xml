@@ -10,8 +10,8 @@
         <version>0.1.0</version>
     </parent>
 
-    <artifactId>soapy</artifactId>
-    <version>0.1.0</version>
+    <artifactId>soapy-library</artifactId>
+    <name>SOAPy library</name>
 
     
 </project>

@@ -10,7 +10,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>soapy</module>
+        <module>soapy-library</module>
         <module>soapy-samples</module>
     </modules>
 

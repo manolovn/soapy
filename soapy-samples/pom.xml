@@ -10,9 +10,8 @@
         <version>0.1.0</version>
     </parent>
 
-    <groupId>com.manolovn.android</groupId>
     <artifactId>soapy-samples</artifactId>
-    <version>0.1.0</version>
+    <name>SOAPy Samples</name>
 
     
 </project>
