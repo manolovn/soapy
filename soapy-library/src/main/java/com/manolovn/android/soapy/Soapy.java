@@ -82,7 +82,7 @@ public class Soapy {
                 SoapObject response = (SoapObject) envelope.getResponse();
 
                 // parse SoapObject to return type
-                Object instance = null;
+                Object instance;
                 instance = returnType.newInstance();
                 returnType.cast(instance);
 
