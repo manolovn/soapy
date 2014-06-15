@@ -140,6 +140,11 @@ public class Soapy {
             return this;
         }
 
+        public Converter setConverter(Converter converter) {
+            this.converter = converter;
+            return this;
+        }
+
         public Soapy build() {
             if (endpoint == null) {
                 throw new IllegalArgumentException("Endpoint may not be null");

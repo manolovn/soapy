@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.manolovn.android.soapy">
 
-    <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="19" />
+    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="19" />
 
     <application
             android:allowBackup="true"
