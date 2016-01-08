@@ -1,4 +1,4 @@
-package com.manolovn.android.soapy.sample.conversionrate;
+package com.manolovn.android.soapy.conversionrate;
 
 import android.app.Activity;
 import android.os.AsyncTask;

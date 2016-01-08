@@ -1,4 +1,4 @@
-package com.manolovn.android.soapy.sample.conversionrate;
+package com.manolovn.android.soapy.conversionrate;
 
 import com.manolovn.android.soapy.annotations.SOAPMethod;
 import com.manolovn.android.soapy.annotations.SOAPProperty;

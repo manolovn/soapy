@@ -1,4 +1,4 @@
-package com.manolovn.android.soapy.sample.tempconvert;
+package com.manolovn.android.soapy.quote;
 
 import android.app.Activity;
 import android.os.AsyncTask;
@@ -7,9 +7,14 @@ import android.widget.Toast;
 import com.manolovn.android.soapy.R;
 import com.manolovn.android.soapy.Soapy;
 
-public class TempConverterActivity extends Activity {
+/**
+ * Sample with quote api
+ *
+ * @author manolovn
+ */
+public class QuoteActivity extends Activity {
 
-    TempConvert tempConvert;
+    QuoteApi quoteApi;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -17,12 +22,12 @@ public class TempConverterActivity extends Activity {
         setContentView(R.layout.main);
 
         Soapy api = new Soapy.Builder()
-                .setEndpoint("http://www.w3schools.com/webservices/tempconvert.asmx")
-                .setNamespace("http://www.w3schools.com/webservices")
+                .setEndpoint("http://www.webservicex.net/stockquote.asmx")
+                .setNamespace("http://www.webserviceX.NET")
                 .build();
-        tempConvert = api.create(TempConvert.class);
+        quoteApi = api.create(QuoteApi.class);
 
-        new SoapTask().execute("30");
+        new SoapTask().execute("GOOG");
     }
 
     private class SoapTask extends AsyncTask<String, Integer, String> {
@@ -31,8 +36,7 @@ public class TempConverterActivity extends Activity {
         protected String doInBackground(String... params) {
 
             String resultsString = "";
-            resultsString = tempConvert.celsiusToFahrenheit(params[0]);
-
+            resultsString = quoteApi.getQuote(params[0]);
             return resultsString;
         }
 
@@ -40,7 +44,11 @@ public class TempConverterActivity extends Activity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
 
-            Toast.makeText(TempConverterActivity.this, result, Toast.LENGTH_SHORT).show();
+            if (result == null) {
+                Toast.makeText(QuoteActivity.this, "EMPTY RESPONSE", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(QuoteActivity.this, result, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

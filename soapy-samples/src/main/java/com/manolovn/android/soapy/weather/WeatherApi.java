@@ -1,4 +1,4 @@
-package com.manolovn.android.soapy.sample.weather;
+package com.manolovn.android.soapy.weather;
 
 import com.manolovn.android.soapy.annotations.SOAPMethod;
 import com.manolovn.android.soapy.annotations.SOAPProperty;

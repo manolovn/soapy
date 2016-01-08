@@ -1,4 +1,4 @@
-package com.manolovn.android.soapy.sample.lab;
+package com.manolovn.android.soapy.lab;
 
 import com.manolovn.android.soapy.annotations.SOAPMethod;
 import com.manolovn.android.soapy.annotations.SOAPProperty;

@@ -1,4 +1,4 @@
-package com.manolovn.android.soapy.sample.weather;
+package com.manolovn.android.soapy.weather;
 
 import android.app.Activity;
 import android.os.AsyncTask;

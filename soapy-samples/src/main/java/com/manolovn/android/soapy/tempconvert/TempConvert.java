@@ -1,4 +1,4 @@
-package com.manolovn.android.soapy.sample.tempconvert;
+package com.manolovn.android.soapy.tempconvert;
 
 import com.manolovn.android.soapy.annotations.SOAPMethod;
 import com.manolovn.android.soapy.annotations.SOAPProperty;

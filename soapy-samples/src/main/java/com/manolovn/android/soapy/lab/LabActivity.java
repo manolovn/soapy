@@ -1,4 +1,4 @@
-package com.manolovn.android.soapy.sample.lab;
+package com.manolovn.android.soapy.lab;
 
 import android.app.Activity;
 import android.os.AsyncTask;
