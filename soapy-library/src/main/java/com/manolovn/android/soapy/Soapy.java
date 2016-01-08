@@ -23,12 +23,14 @@ import java.lang.reflect.Proxy;
  */
 public class Soapy {
 
-    final String endpoint;
-    final String namespace;
-    final HttpTransportSE httpTransportSE;
-    final SoapSerializationEnvelope envelope;
+    private final String endpoint;
+    private final String namespace;
+    private final HttpTransportSE httpTransportSE;
+    private final SoapSerializationEnvelope envelope;
 
-    private Soapy(String endpoint, String namespace, HttpTransportSE httpTransportSE,
+    private Soapy(String endpoint,
+                  String namespace,
+                  HttpTransportSE httpTransportSE,
                   SoapSerializationEnvelope envelope) {
         this.endpoint = endpoint;
         this.namespace = namespace;
@@ -50,13 +52,8 @@ public class Soapy {
             SoapObject request = new SoapObject(namespace + "/", methodname);
 
             Annotation[][] parameterAnnotations = method.getParameterAnnotations();
-            Class[] parameterTypes = method.getParameterTypes();
-
-            int i = 0;
             int k = 0;
             for (Annotation[] annotations : parameterAnnotations) {
-                Class parameterType = parameterTypes[i++];
-
                 for (Annotation annotation : annotations) {
                     if (annotation instanceof SOAPProperty) {
                         SOAPProperty myAnnotation = (SOAPProperty) annotation;

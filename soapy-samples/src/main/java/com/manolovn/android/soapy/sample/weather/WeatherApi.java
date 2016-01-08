@@ -18,7 +18,8 @@ public interface WeatherApi {
      * @return an string with XML information
      */
     @SOAPMethod("GetWeather")
-    String getWeather(@SOAPProperty("CityName") String cityName, @SOAPProperty("CountryName") String countryName);
+    String getWeather(@SOAPProperty("CityName") String cityName,
+                      @SOAPProperty("CountryName") String countryName);
 
     /**
      * Return cities of given country
