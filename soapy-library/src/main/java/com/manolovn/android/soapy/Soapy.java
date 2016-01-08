@@ -28,7 +28,8 @@ public class Soapy {
     final HttpTransportSE httpTransportSE;
     final SoapSerializationEnvelope envelope;
 
-    private Soapy(String endpoint, String namespace, HttpTransportSE httpTransportSE, SoapSerializationEnvelope envelope) {
+    private Soapy(String endpoint, String namespace, HttpTransportSE httpTransportSE,
+                  SoapSerializationEnvelope envelope) {
         this.endpoint = endpoint;
         this.namespace = namespace;
         this.httpTransportSE = httpTransportSE;
@@ -111,7 +112,8 @@ public class Soapy {
 
     @SuppressWarnings("unchecked")
     public <T> T create(Class<T> apiInterface) {
-        return (T) Proxy.newProxyInstance(apiInterface.getClassLoader(), new Class<?>[]{apiInterface}, new SoapyHandler());
+        return (T) Proxy.newProxyInstance(apiInterface.getClassLoader(),
+                new Class<?>[]{apiInterface}, new SoapyHandler());
     }
 
     public static class Builder {
@@ -140,10 +142,10 @@ public class Soapy {
             return this;
         }
 
-        public Converter setConverter(Converter converter) {
+        /*public Converter setConverter(Converter converter) {
             this.converter = converter;
             return this;
-        }
+        }*/
 
         public Soapy build() {
             if (endpoint == null) {
@@ -159,7 +161,8 @@ public class Soapy {
             }
             if (httpTransportSE == null) {
                 httpTransportSE = new HttpTransportSE(java.net.Proxy.NO_PROXY, endpoint, 60000);
-                httpTransportSE.setXmlVersionTag("<!--?xml version=\"1.0\" encoding= \"UTF-8\" ?-->");
+                httpTransportSE
+                        .setXmlVersionTag("<!--?xml version=\"1.0\" encoding= \"UTF-8\" ?-->");
             }
             if (envelope == null) {
                 envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);

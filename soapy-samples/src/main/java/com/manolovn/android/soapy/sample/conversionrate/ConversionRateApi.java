@@ -18,6 +18,7 @@ public interface ConversionRateApi {
      * @return A representation of the conversion rate between currencies
      */
     @SOAPMethod("ConversionRate")
-    String conversionRate(@SOAPProperty("FromCurrency") String fromCurrency, @SOAPProperty("ToCurrency") String toCurrency);
+    String conversionRate(@SOAPProperty("FromCurrency") String fromCurrency,
+                          @SOAPProperty("ToCurrency") String toCurrency);
 
 }
