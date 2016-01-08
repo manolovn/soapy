@@ -1,20 +1,20 @@
-package com.manolovn.android.soapy.quote;
+package com.manolovn.android.soapy.sample.conversionrate;
 
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Toast;
-import com.manolovn.android.soapy.R;
 import com.manolovn.android.soapy.Soapy;
+import com.manolovn.android.soapy.sample.R;
 
 /**
- * Sample with quote api
+ * Sample with conversion api
  *
  * @author manolovn
  */
-public class QuoteActivity extends Activity {
+public class ConversionRateActivity extends Activity {
 
-    QuoteApi quoteApi;
+    ConversionRateApi conversionRateApi;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -22,12 +22,12 @@ public class QuoteActivity extends Activity {
         setContentView(R.layout.main);
 
         Soapy api = new Soapy.Builder()
-                .setEndpoint("http://www.webservicex.net/stockquote.asmx")
+                .setEndpoint("http://www.webservicex.net/CurrencyConvertor.asmx")
                 .setNamespace("http://www.webserviceX.NET")
                 .build();
-        quoteApi = api.create(QuoteApi.class);
+        conversionRateApi = api.create(ConversionRateApi.class);
 
-        new SoapTask().execute("GOOG");
+        new SoapTask().execute("USD", "EUR");
     }
 
     private class SoapTask extends AsyncTask<String, Integer, String> {
@@ -36,7 +36,7 @@ public class QuoteActivity extends Activity {
         protected String doInBackground(String... params) {
 
             String resultsString = "";
-            resultsString = quoteApi.getQuote(params[0]);
+            resultsString = conversionRateApi.conversionRate(params[0], params[1]);
             return resultsString;
         }
 
@@ -45,9 +45,9 @@ public class QuoteActivity extends Activity {
             super.onPostExecute(result);
 
             if (result == null) {
-                Toast.makeText(QuoteActivity.this, "EMPTY RESPONSE", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ConversionRateActivity.this, "EMPTY RESPONSE", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(QuoteActivity.this, result, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ConversionRateActivity.this, result, Toast.LENGTH_SHORT).show();
             }
         }
     }

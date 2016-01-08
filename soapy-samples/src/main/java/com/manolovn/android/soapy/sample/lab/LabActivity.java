@@ -1,10 +1,10 @@
-package com.manolovn.android.soapy.lab;
+package com.manolovn.android.soapy.sample.lab;
 
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Toast;
-import com.manolovn.android.soapy.R;
+import com.manolovn.android.soapy.sample.R;
 import com.manolovn.android.soapy.Soapy;
 
 /**

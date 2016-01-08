@@ -1,11 +1,11 @@
-package com.manolovn.android.soapy.tempconvert;
+package com.manolovn.android.soapy.sample.tempconvert;
 
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Toast;
-import com.manolovn.android.soapy.R;
 import com.manolovn.android.soapy.Soapy;
+import com.manolovn.android.soapy.sample.R;
 
 public class TempConverterActivity extends Activity {
 

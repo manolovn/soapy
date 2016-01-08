@@ -1,20 +1,20 @@
-package com.manolovn.android.soapy.conversionrate;
+package com.manolovn.android.soapy.sample.weather;
 
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Toast;
-import com.manolovn.android.soapy.R;
 import com.manolovn.android.soapy.Soapy;
+import com.manolovn.android.soapy.sample.R;
 
 /**
- * Sample with conversion api
+ * Sample with weather api
  *
  * @author manolovn
  */
-public class ConversionRateActivity extends Activity {
+public class WeatherActivity extends Activity {
 
-    ConversionRateApi conversionRateApi;
+    WeatherApi weaherApi;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -22,12 +22,12 @@ public class ConversionRateActivity extends Activity {
         setContentView(R.layout.main);
 
         Soapy api = new Soapy.Builder()
-                .setEndpoint("http://www.webservicex.net/CurrencyConvertor.asmx")
+                .setEndpoint("http://www.webservicex.net/globalweather.asmx")
                 .setNamespace("http://www.webserviceX.NET")
                 .build();
-        conversionRateApi = api.create(ConversionRateApi.class);
+        weaherApi = api.create(WeatherApi.class);
 
-        new SoapTask().execute("USD", "EUR");
+        new SoapTask().execute("Madrid", "Spain");
     }
 
     private class SoapTask extends AsyncTask<String, Integer, String> {
@@ -36,7 +36,7 @@ public class ConversionRateActivity extends Activity {
         protected String doInBackground(String... params) {
 
             String resultsString = "";
-            resultsString = conversionRateApi.conversionRate(params[0], params[1]);
+            resultsString = weaherApi.getWeather(params[0], params[1]);
             return resultsString;
         }
 
@@ -45,9 +45,9 @@ public class ConversionRateActivity extends Activity {
             super.onPostExecute(result);
 
             if (result == null) {
-                Toast.makeText(ConversionRateActivity.this, "EMPTY RESPONSE", Toast.LENGTH_SHORT).show();
+                Toast.makeText(WeatherActivity.this, "EMPTY RESPONSE", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(ConversionRateActivity.this, result, Toast.LENGTH_SHORT).show();
+                Toast.makeText(WeatherActivity.this, result, Toast.LENGTH_SHORT).show();
             }
         }
     }

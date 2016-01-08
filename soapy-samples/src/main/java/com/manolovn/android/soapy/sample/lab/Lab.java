@@ -1,4 +1,4 @@
-package com.manolovn.android.soapy.lab;
+package com.manolovn.android.soapy.sample.lab;
 
 /**
  * Lab entity
