@@ -1,5 +1,8 @@
 # Soapy
-Consume unfashionable SOAP webservices in a fashionable way, very inspired by Retrofit
+Project under construction
+
+Consume unfashionable SOAP webservices in a fashionable way, very inspired by Retrofit.
+Mainly this project is an experiment with Java dynamic proxies.
 
 # How to use
 Define your SOAP API as a Java interface
